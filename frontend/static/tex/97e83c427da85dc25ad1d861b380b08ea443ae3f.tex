@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: slope;rule;limit;functions;curve;compute
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering
+
+\begin{tikzpicture}[>=latex,xscale=.5*1.25, yscale=.5*1.25][font=\sf\small]
+
+%\draw[xstep=1cm,ystep=1cm,color=gray!80] (0, -1) grid (8, 8);
+
+\draw[purple, samples=200, smooth, domain=0:2*pi, variable=\t]
+plot ({2*cos(\t r) - cos(2*\t r)}, {2*sin(\t r) - sin(2*\t r)});
+
+\draw[fill, purple, xscale=1/1.25, yscale=1/1.25] ({-1/2*1.25},{3*sqrt(3)/2*1.25}) circle(0.05) node[above, xshift=-8, scale=0.6]{$(-\frac{1}{2}a, \frac{3\sqrt 3}{2}a)$};
+
+\draw[fill, purple, xscale=1/1.25, yscale=1/1.25] ({-1/2*1.25},{-3*sqrt(3)/2*1.25}) circle(0.05) node[below, xshift=-10, scale=0.6]{$(-\frac{1}{2}a, -\frac{3\sqrt 3}{2}a)$};
+
+\draw[fill, purple, xscale=1/1.25, yscale=1/1.25] ({3/2*1.25},{sqrt(3)/2*1.25}) circle(0.05) node[right, xshift=0, scale=0.6]{$(\frac{3}{2}a, \frac{\sqrt 3}{2}a)$};
+
+\draw[fill, purple, xscale=1/1.25, yscale=1/1.25] ({3/2*1.25},{-sqrt(3)/2*1.25}) circle(0.05) node[right, xshift=0, scale=0.6]{$(\frac{3}{2}a, -\frac{\sqrt 3}{2}a)$};
+
+\draw[fill, purple, xscale=1/1.25, yscale=1/1.25] ({-3*1.25},{0}) circle(0.05) node[right, yshift=3, scale=0.6]{$(-3a, 0)$};
+
+\draw[fill, purple, xscale=1/1.25, yscale=1/1.25] ({1*1.25},{0}) circle(0.05) node[left, xshift = 2, yshift=3, scale=0.6]{$(a, 0)$};
+
+\foreach \x in {}
+\draw (\x,2pt/6) -- (\x,-2pt/6)
+node[anchor=north] {\tiny$\x$}
+;
+%\draw (1,2pt/3) -- (1,-2pt/3)node[anchor=north, xshift=0, scale=0.7] {$a$};
+
+\foreach \x in {}
+\draw (\x,2pt/2.5) -- (\x,-2pt/2.5)
+node[anchor=south] {\tiny$\x$}
+;
+\foreach \y in {}
+\draw (-2pt/6,\y) -- (2pt/6,\y)
+node[anchor=east] {\tiny $\y$}
+;
+
+\draw[->] (-4, 0) -- (3, 0)node[below] {\scriptsize$x$} ;
+\draw[-> ] (0, -4) -- (0, 4)node[left] {\scriptsize$y$} ;
+
+\node[yshift=0] at (-0.2/1.25, -0.2/1.25) {\tiny$0$};
+
+\end{tikzpicture}
+\end{document}

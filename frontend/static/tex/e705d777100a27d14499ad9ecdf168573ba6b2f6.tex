@@ -1,0 +1,49 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: 
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering
+
+\begin{tikzpicture}[>=latex,xscale=.5*1, yscale=.5*1][font=\sf\small]
+
+%\draw[xstep=1cm,ystep=1cm,color=gray!80] (0, -1) grid (8, 8);
+
+\draw[teal] (0,0)--({4*cos(2*pi/3 r)}, {4*sin(2*pi/3 r)})node[black, above, scale=0.7] {$(4, \frac{2\pi}{3})$};
+
+\draw[teal, fill=teal, xscale=1/1, yscale=1/1] ({4*cos(2*pi/3 r)}, {4*sin(2*pi/3 r)}) circle(0.05);
+
+\node[xshift= 7, yshift=12, scale=0.7] at (0,0) {$\frac{2\pi}{3}$};
+
+\draw[->, >=stealth', red, samples=100, smooth, domain=0:2*pi/3-0.01, variable=\t]
+plot ({0.7*cos(\t r)}, {0.7*sin(\t r)})--({0.7*cos(2*pi/3 r)}, {0.7*sin(2*pi/3 r)});
+
+\foreach \x in {-2, -1, 1}
+\draw (\x,2pt/1) -- (\x,-2pt/1)
+node[anchor=north] {\tiny$\x$}
+;
+
+\foreach \x in {}
+\draw (\x,2pt/1) -- (\x,-2pt/2.5)
+node[anchor=south] {\tiny$\x$}
+;
+\foreach \y in {-1,1,2,3}
+\draw (-2pt/1,\y) -- (2pt/1,\y)
+node[anchor=east] {\tiny $\y$}
+;
+
+\draw[->] (-5, 0) -- (5, 0)node[below] {\scriptsize$x$} ;
+\draw[->] (0, -5) -- (0, 5)node[left] {\scriptsize$y$} ;
+
+\node at (-0.2/2, -0.2/2) {\tiny$0$};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: form;focus;ellipse;eccentricity;directrix;curves;curve
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering
+
+\begin{tikzpicture}[>=latex,xscale=.5*0.4, yscale=.5*0.4][font=\sf\small]
+
+\draw[->] (-14, 0) -- (6, 0)node[below] {\small $x$};
+\draw[->] (0, -8) -- (0, 8)node[left] {\small $y$};
+
+\node[purple, scale=0.8] at (-5, -10) {(b) $\displaystyle r = \frac{ed}{1-e\cos \theta}$};
+
+\clip[] (-14,-8) rectangle (4.2, 8);
+
+\draw[purple, samples=100, smooth, domain=pi/2-0.5:3*pi/2+0.5, variable=\t]
+plot ({0.7*8/(1-0.7*cos(\t r))*cos(\t r)}, {0.7*8/(1-0.7*cos(\t r))*sin(\t r)}) ;
+
+\draw[teal] (-8, -8) -- (-8, 8) node[left, pos =0.9, scale=0.8] {$\hbox{directrix}$};
+
+\draw[fill, xscale=1/0.4, yscale=1/0.4] (0, 0) circle(0.06) node[left, yshift=-4, scale=0.8]{$F$};
+
+\node[left, scale=0.8] at (-8, 2) {$x=-d$};
+
+\end{tikzpicture}
+\end{document}

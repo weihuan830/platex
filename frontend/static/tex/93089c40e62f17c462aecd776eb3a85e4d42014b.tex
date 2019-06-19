@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: unit;terms;limit;length;function;curve;circle
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering
+
+\begin{tikzpicture}[>=latex,xscale=.5*1.5, yscale=.5*1.5][font=\sf\small]
+
+\draw[teal] (0, 0)--(4,3);
+
+\draw[fill, xscale=1/1.5, yscale=1/1.5] ({4*1.5}, {3*1.5}) circle(0.05)node[above, xshift=0, yshift=0, scale=0.7] {$P(r, \theta)=P(x,y)$};
+
+\draw (4,0)--++(0, 3)node[black, midway, pos=0.5, right, xshift=0, scale=0.7]{$y$};
+\draw[white] (0,0)--(4,0)node[black, midway, pos=0.5, below, xshift=0, scale=0.7]{$x$};
+
+\draw ({4-0.2},{0})--++({0},{0.2})--++(0.2, 0);
+
+\node[xshift=12, yshift=4, scale=0.7] at (0,0) {$\theta$};
+
+\draw[->] (-1, 0) -- (5.5, 0)node[below] {\small $x$};
+\draw[->] (0, -1) -- (0, 4)node[left] {\small $y$};
+
+\node[scale=0.7] at ({-0.2*1.5/1.5}, {-0.2*1.5/1.5}) {\scriptsize$O$};
+
+\end{tikzpicture}
+\end{document}

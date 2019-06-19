@@ -1,0 +1,98 @@
+#editor { 
+    position: fixed;
+}
+#parent {
+    height:100%;
+    width:100%;
+    display: none;
+    background-color:rgba(0,0,0,0.4);
+    position: fixed;
+}
+#noimg {
+    height:100%;
+    width:100%;
+    display: none;
+    position: fixed;
+    text-align: center;
+}
+#id_alien{
+    min-height: 150px;
+    min-width: 150px;
+    max-height: 250px;
+    max-width: 250px;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+#id_alien_words{
+    width:100%;
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: middle;
+    font-size: 30px;
+}
+
+.text-container{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: #fff;
+    padding: 0 0.5em;
+    z-index: 1;
+}
+.ul-container{
+    position: absolute;
+    left: 0;
+    z-index: 99;
+    min-width: 100%;
+    box-sizing: border-box;
+    list-style: none;
+    padding: 0;
+    border-radius: 3px;
+    margin: .2em 0 0;
+    background: #fff;
+    box-shadow: 0.05em 0.2em 0.6em rgba(0,0,0,0.2);
+    text-shadow: none;
+    color: #1D262D;
+    text-align: left;
+}
+.ul-container li{
+    position: relative;
+    height: 3em;
+    cursor: pointer;
+    clear: both;
+    display: block;
+}
+/* .ul-container :hover{
+    background: #0E2A47;
+    color: white;
+} */
+.ul-container li:hover > .text-container{
+    background: #0E2A47;
+    color: white;
+}
+
+.ul-container li:hover {
+    background: #0E2A47;
+    color: white;
+}
+
+.ul-container li :first-child{
+    border-radius: 3px 3px 0 0;
+}
+.text-container .text{
+    padding-top: 10px;
+}
+#id_container{
+    /* display: none; */
+}
+.tagspan {
+    border-radius: 5px;
+    padding: 5px;
+    display: inline-block;
+    margin-bottom: 3px;
+    margin-right: 2px;
+}
