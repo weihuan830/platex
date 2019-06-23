@@ -146,7 +146,7 @@ export default {
         // let padbtm = imghei / config.imagewidth * 100;//percentage
         let hei = imghei + 25;
         // let src = config.baseurl+"/image/"+arr[i]["name"];
-        let y = this.yindex[this.currentIndex % size] + 60;
+        let y = this.yindex[this.currentIndex % size] + 80;
         this.yindex[this.currentIndex % size] += hei;
         this.currentIndex++;
         return {
