@@ -1,0 +1,32 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: end behavior;perimeter;moment;angle of depression;difference quotient
+:Prob: 0.5064;0.5056;0.4976;0.4942;0.4895
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\begin{tikzpicture}[>=latex,xscale=.5*2, yscale=.5*2][font=\sf\small] 
+
+\draw[] (-1, 0) -- (2.6, 0)node[below] {} ;
+\draw[] (0, -3) -- (0, 1)node[left] {\scriptsize$N$} ;
+
+\draw[cyan, ->, >=stealth'] (0, 0) -- (0, -2)node[left, midway, pos=0.7, xshift=0, yshift=0, scale=0.7]{${\bf D}$};
+
+\draw[purple, ->, >=stealth'] (0, 0) -- ({3*cos(-54)}, {3*sin(-54)})node[right, midway, pos=0.5, xshift=2, yshift=0, scale=0.7]{${\bf F}$};
+
+\draw[samples=100, smooth, domain=-54:-90, variable=\x] 
+		plot ({0.4*cos(\x)}, {0.4*sin(\x)}); 
+
+\node[xshift=1.7, yshift=-5, scale=0.7] at ({0.4*cos(-70)}, {0.4*sin(-70)}) {$36^\circ$};
+
+\end{tikzpicture}
+\end{document}

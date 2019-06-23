@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: x-y plane;x-z plane;y-z plane;area using parametric equations,parametric integral formula;two intercept form for the equation of a line
+:Prob: 0.5078;0.5009;0.5009;0.4976;0.4919
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\begin{tikzpicture}[font=\footnotesize]
+\pgfplotsset{compat=1.8}
+\begin{axis}
+[axis lines = center, view={120}{20},
+axis background, xlabel = {$x$}, ylabel ={$y$}, zlabel ={$z$}, domain =-2:2, y domain =-2:2,
+xmin =0,
+xmax =2.99,
+ymin =-2.5,
+ymax =1,
+zmin =0, 
+zmax =1.99,
+samples =10, samples y =40, z buffer = auto, 
+every axis x label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= east, yshift =-2
+},
+every axis y label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= west,
+},
+every axis z label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= south
+}]
+
+\addplot3[surf, shader=interp, mesh/cols=2, opacity=0.6] coordinates
+		{(1,0,0) (0,-2,0) (0,0,1.5) (0,0,1.5)};
+          
+\addplot3[surf, black] coordinates
+		{(1,0,0) (0,-2,0)};
+\addplot3[surf, black] coordinates
+		{(0,0,1.5) (0,-2,0)};	
+\addplot3[surf, black] coordinates
+		{ (0,0,1.5) (1,0,0)};
+		
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

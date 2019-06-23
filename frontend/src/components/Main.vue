@@ -1,9 +1,12 @@
 <template>
   <div>
     <AppBase @searchkey="update"></AppBase>
-    <PicGallery @searchTag="update" @requestTexid="getTexfile" :style="{height: getheight}" :piclist="piclist"></PicGallery>
+    <PicGallery @tagdatachanged="humantagchanged" @searchTag="update" @requestTexid="getTexfile" :style="{height: getheight}" :piclist="piclist"></PicGallery>
     <div @click="hideEditor($event)">
       <TexEditor :acecontent="acecontent" v-if="showeditor" class="texEdi"></TexEditor>
+    </div>
+    <div>
+      <TagEditor :currentPicTagvalue="currentPicTagvalue" :currentPicTag="currentPicTag" @tagchange="humantagchanged" @tagcancel="hideTagEditor" v-if="showetagditor" class="texEdi"></TagEditor>
     </div>
   </div>
 </template>
@@ -12,13 +15,15 @@
 import PicGallery from "./PicGallery";
 import AppBase from "./AppBase";
 import TexEditor from "./TexEditor"
+import TagEditor from "./TagEditor"
 import DataService from "../services/data-service";
 export default {
   name: "Main",
   components: {
     PicGallery,
     AppBase,
-    TexEditor
+    TexEditor,
+    TagEditor
   },
   data() {
     return {
@@ -31,8 +36,11 @@ export default {
       marginleft: 0,
       currentPage: 1,
       searchtag: "",
+      showetagditor:false,
       showeditor:false,
-      acecontent:""
+      acecontent:"",
+      currentPicTag:{},
+      currentPicTagvalue:""
     };
   },
   computed: {
@@ -44,7 +52,6 @@ export default {
     this.initialize();
     this.update()
     window.addEventListener("scroll", this.onScroll);
-    
   },
   methods: {
     initialize() {
@@ -85,6 +92,35 @@ export default {
       this.marginleft =
         (window.innerWidth - this.sizeinline * this.gridwidth) / 2;
     },
+    humantagchanged(data){
+      if(data.state == "delete"){
+        this.piclist[data.index].tagshow[data.tagindex] = 0
+      }else if(data.state == "add"){
+        this.currentPicTag = data
+        this.currentPicTagvalue = data.tag
+        this.showetagditor = true
+      }else if(data.state == "change"){
+        let tags = data.tag.trim().split(";")
+        this.piclist[data.index].tagshow[data.tagindex] = 0
+        for(let t=0;t<tags.length;t++){
+          let changed = false
+          for(let i=0;i<this.piclist[data.index].tags.length;i++){
+              if(this.piclist[data.index].tags[i] == tags[t]){
+                this.piclist[data.index].tagshow[i] = 1
+                changed = true
+              }
+          }
+          if(!changed){
+            this.piclist[data.index].tags.push(tags[t])
+            this.piclist[data.index].tagshow.push(1)
+            this.piclist[data.index].tagcolor.push( this.getRandomColor() )
+          }
+        }
+        this.showetagditor = false
+      }
+      this.piclist.push({})
+      this.piclist.pop()
+    },
     update(searchkey) {
       if(searchkey !== undefined){
         this.searchtag = searchkey
@@ -117,7 +153,8 @@ export default {
           transx: x,
           transy: y,
           tags: Object.keys(item.tags),
-          tagcolor: this.getRandomColor(Object.keys(item.tags))
+          tagshow: Object.values(item.tags),
+          tagcolor: this.getRandomColorList(Object.keys(item.tags))
         };
       }))
     },
@@ -130,7 +167,12 @@ export default {
         this.yindex.push(0);
       }
     },
-    getRandomColor(arr) {
+    getRandomColor(str) {
+      var letters = '0123456789ABCDEF';
+      var o = Math.round, r = Math.random, s = 255;
+      return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ', 0.8)';
+    },
+    getRandomColorList(arr) {
       var letters = '0123456789ABCDEF';
       return arr.map(itm =>{
         var o = Math.round, r = Math.random, s = 255;
@@ -147,6 +189,9 @@ export default {
         this.stopfetch = true;
         this.update()
       }
+    },
+    hideTagEditor(e){
+      this.showetagditor = false
     },
     hideEditor(e){
       if(e.target.className === "ace_content"){

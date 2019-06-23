@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: moment;area using parametric equations,parametric integral formula;equation of a line;area under a curve;centroid formula
+:Prob: 0.5856;0.5575;0.5419;0.5364;0.5345
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering
+
+\begin{tikzpicture}[>=latex,xscale=.5/0.69, yscale=.5/0.69][font=\sf\small] 
+
+\begin{scope}[xshift=0.51405in,yshift=0.4278in]
+\node at (0,0) {
+\includegraphics[width=70mm]{Problems/Pictures/Stewart_Calculus_Ex_pic_12_1_39.png}
+};
+\end{scope}
+
+%\draw (0, 0) circle(0.1);
+%\draw[red] (0, 0)--(0,1);
+
+\draw[red, fill] (-0.525, {2.82-4.}) circle(0.075);
+
+\draw[pink] (-0.525, 2.82) --++(0,-4.)node[black, below]{$Q$} -- (1., -0.2)--++(0, 4) --(-0.525, 2.82) --++(-0.975,0.2)--++(0, -4)--++(0.975, -0.2);
+
+\draw[pink] ({-0.525-0.975}, {2.82+0.2}) -- (0,4)--(1, 3.8);
+
+\draw[pink, dotted, thick] (-0.525, 2.82)--(0,4);
+\draw[pink, dotted, thick] (-0.525, {2.82-4}) -- (0,0);
+
+\draw[blue] ({-2}, {0.98/1.5*(-2)}) --++(0, 6.25)node[black, left]{$C$};
+\draw[blue, fill] ({-2}, {0.98/1.5*(-2)}) circle(0.075);
+\draw[blue, fill] ({-2}, {0.98/1.5*(-2)+6.25}) circle(0.075);
+
+\draw[blue] (3.92, -0.84) --++(0, -2.65)node[black, left]{$B$};
+\draw[blue, fill] (3.92, -0.84) circle(0.075);
+\draw[blue, fill] (3.92, {-0.84-2.65}) circle(0.075);
+
+\draw[blue, fill] ({2.16}, {(0.98/1.5*(-2)+0.84)/(-2-3.92)*(2.16-3.92)-0.84}) circle(0.075)node[black, below, xshift=-4] {$A$};
+
+\draw[purple, fill] (-0.525, 2.83) circle(0.075);
+\draw[red, fill] (-0.525, {2.82-4.}) circle(0.075);
+
+\end{tikzpicture}
+\end{document}

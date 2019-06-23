@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: moment;focus of a parabola;directrix of a parabola;parabola;focal radius 
+:Prob: 0.5945;0.5786;0.5693;0.564;0.5602
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\begin{tikzpicture}[>=latex,xscale=.5*1, yscale=.5*1][font=\sf\small] 
+
+\draw[xstep=1cm,ystep=1cm,color=gray!80] (-2, -3) grid (8, 4);
+
+    	\foreach \x in {}
+     		\draw (\x,2pt/8) -- (\x,-2pt/8)
+			node[anchor=north] {\tiny$\x$}
+			;
+
+    	\foreach \x in {}
+     		\draw (\x,2pt/1) -- (\x,-2pt/1)
+			node[anchor=south] {\tiny$\x$}
+			;
+    	\foreach \y in {}
+     		\draw (-2pt/1,\y) -- (2pt/1,\y)
+			node[anchor=east] {\tiny $\y$}
+			;
+
+\draw[->] (-2, 0) -- (8, 0)node[below] {$x$} ;
+\draw[->] (0, -3) -- (0, 4)node[left] {$y$} ;
+
+\draw[red, thick, opacity=1, ->, >=stealth'] (0, 0) -- (3, 2)node[opacity=1, left, midway, pos=0.6, xshift=-2, yshift=0, scale=0.7]{${\bf a}$};
+
+\draw[red, thick, ->, >=stealth'] (0, 0) -- (2, -1)node[opacity=1, left, midway, pos=0.6, xshift=-2, yshift=0, scale=0.7]{${\bf b}$};
+
+\draw[purple, thick, ->, >=stealth'] (0, 0) -- (7, 1)node[above, midway, pos=0.6, xshift=0, yshift=0, scale=0.7]{${\bf c}$};
+
+\node[scale=0.7] at (-0.2/1, -0.2/1) {\scriptsize$0$};
+
+\end{tikzpicture}
+\end{document}

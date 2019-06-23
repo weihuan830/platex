@@ -3,21 +3,31 @@ import json
 from flask_cors import CORS
 from flask import request
 import os,sys
+from pathlib import Path
 from PIL import Image
+from datetime import date
+
+# dd/mm/YY
 
 app = Flask(__name__, static_url_path="")
 app._static_folder = "static"
 CORS(app)
 
-imgResourceList = []
-tagResourceSet = {}
 @app.route('/')
 def index():
     return app.send_static_file('./latexfun.html')
 
+def todayFile():
+    today = date.today()
+    name = "tag_" + str(today.strftime("%Y-%m-%d"))
+    if not Path("tags/" + name).exists():
+        with open("tags/" + name,"w+"):
+            pass
+    return "tags/" + name
+
 def readIMGTAG():
-    global imgResourceList
-    global tagResourceSet
+    imgResourceList = []
+    humanTag,tagResourceSet = loadTagfile()
     imagenames = os.listdir('../ImgTex/image/')
     for i in imagenames:
         if i==".DS_Store":
@@ -25,7 +35,10 @@ def readIMGTAG():
         im=Image.open('../ImgTex/image/'+i)
         obj = {"name":i, "width":im.size[0], "height": im.size[1]}
         name = i.replace(".png","").replace(".jpg","").replace(".jpeg","")
-        tags = {}
+        if name in humanTag:
+            tags = humanTag[name]
+        else:
+            tags = {}
         try:
             with open("../ImgTex/tex/"+name+".tex","r") as f:
                 for ln in f:
@@ -36,7 +49,7 @@ def readIMGTAG():
                     tmp = ln.split(";")
                     for k in tmp:
                         x = k.strip().lower()
-                        if len(x) > 0:
+                        if len(x) > 0 and not x in tags:
                             tags[x] = 1
                             tagResourceSet[x] = 1
                     break
@@ -46,19 +59,35 @@ def readIMGTAG():
             obj["tex"] = ""
             obj["tags"] = {}
         imgResourceList.append(obj)
-    print("circle" in tagResourceSet)
+    return imgResourceList, tagResourceSet
+
+def loadTagfile():
+    todayFile()
+    tmptag = {}
+    localtags = {}
+    filelist = list(os.listdir("tags"))
+    filelist.reverse()
+    for item in filelist:
+        with open("tags/" + item, "r") as f:
+            for i in f.readlines():
+                tmp = i.replace("\n","").split(";", 2)
+                localtags[tmp[2]] = 1
+                if tmp[0] in tmptag:
+                    tmptag[tmp[0]][tmp[2]] = int(tmp[1])
+                else:
+                    tmptag[tmp[0]] = {tmp[2]: int(tmp[1])}
+    return tmptag,localtags
 
 @app.route('/gettaglist',methods=['GET'])
 def getTAGList():
-    global tagResourceSet
-    return str({"data":list(tagResourceSet.keys())})
+    _IRL, _TRS = readIMGTAG()
+    return str({"data":list(_TRS.keys())})
 
 @app.route('/getimgs',methods=['GET'])
 def getIMGList():
-    pagesize = 20
-    global imgResourceList
-    global tagResourceSet
-    localList = imgResourceList
+    pagesize = 40
+    _IRL, _TRS = readIMGTAG()
+    localList = _IRL
     page = 1
     tag = ""
     if "tag" in request.args:
@@ -66,8 +95,8 @@ def getIMGList():
             tag = request.args['tag']
             if tag.strip() != "":
                 localList = []
-                if tag.strip() in tagResourceSet:
-                    for item in imgResourceList:
+                if tag.strip() in _TRS:
+                    for item in _IRL:
                         if tag in item['tags']:
                             localList.append(item)
 
@@ -81,7 +110,34 @@ def getIMGList():
     sub = localList[((page-1)*pagesize):(page*pagesize)]
     return str({"data":sub})
 
-readIMGTAG()
+@app.route('/deletetag', methods=['GET'])
+def getTagDelete():
+    try:
+        texid = request.args['id'].replace(".png","")
+        tag = request.args['tag']
+        filename = todayFile()
+        with open(filename, "a") as f:
+            f.write(texid+";"+"0"+";"+tag+"\n")
+        return "true"
+    except:
+        return "false"
+
+@app.route('/addtag', methods=['GET'])
+def getTagAdd():
+    try:
+        texid = request.args['id'].replace(".png","")
+        tag = request.args['tag'].split(";")
+        replaced = request.args['rep'].strip()
+        filename = todayFile()
+        with open(filename, "a") as f:
+            f.write(texid+";"+"0"+";"+replaced+"\n")
+            for i in tag:
+                t = i.replace(";","").strip()
+                if len(t) > 0:
+                    f.write(texid+";"+"1"+";"+t+"\n")
+        return "true"
+    except:
+        return "false"
 if __name__ == '__main__':
     # app.run(host='0.0.0.0')
     app.run(debug=True)

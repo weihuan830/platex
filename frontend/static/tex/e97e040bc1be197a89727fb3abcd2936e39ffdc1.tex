@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: properties of equality, equation rules;equation of a line;absolute value rules;equivalence properties of equality;set
+:Prob: 0.5397;0.5225;0.5214;0.5143;0.4946
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\pgfplotsset{
+    colormap/outside/.style={
+        colormap=
+            {outside}{
+            rgb255(0cm)=(110,110,255);
+            rgb255(1cm)=(20,20,255);
+            }
+    },
+    colormap/outside,
+    colormap/inside/.style={
+        colormap={inside}{
+            rgb255(0cm)=(20,20,255);
+            rgb255(1cm)=(220,220,255);
+        }
+    },
+    colormap/inside
+}
+
+\begin{tikzpicture}[font=\footnotesize]
+\pgfplotsset{compat=1.8}
+
+\begin{axis}
+[axis lines = center, view={130}{30}, ticks=none, 
+axis background, xlabel = {$x$}, ylabel ={$y$}, zlabel ={$z$}, domain =0:1, y domain =0:1,
+xmin = 0, %-4.0,
+xmax =6.0,
+ymin = 0, %-1.0,
+ymax =5,
+zmin =0, %-3, 
+zmax =7,
+samples =10, samples y =40, z buffer =sort,
+every axis x label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= east, yshift =-2
+},
+every axis y label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= west,
+},
+every axis z label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= south
+}]
+
+\node[xshift=4, yshift=4, label={-180:{$O$}}] at (axis cs:0,0,0) {};
+\node[xshift=-2, yshift=0, label={0:{$\color{teal}\theta$}}] at (axis cs:0,0,0) {};
+
+\addplot3[purple, ->, >=stealth'] coordinates
+        {(-1,2,5)(1, 2, -2) }node[right, midway, pos=0.55, xshift=0, yshift=-2, scale=0.8]{$\bf a-b$};
+
+\addplot3[teal, ->, >=stealth'] coordinates
+        {(0,0,0) (-1,2,5)}node[left, midway, pos=0.5, xshift=0, yshift=0, scale=0.8]{$\bf a$}node[black, right, scale=1]{$A$};
+\addplot3[teal, ->, >=stealth'] coordinates
+        {(0,0,0) (1, 2, -2)}node[below, midway, pos=0.5, xshift=0, yshift=0, scale=0.8]{$\bf b$}node[black, below, scale=1]{$B$};
+        
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

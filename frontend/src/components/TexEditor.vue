@@ -22,9 +22,7 @@ export default {
   },
   methods: {
         editorInit: function () {
-            // require('brace/ext/language_tools') //language extension prerequsite...
             require('brace/mode/html')                
-            // require('brace/mode/javascript')    //language
             require('brace/mode/latex')
             require('brace/theme/chrome')
         }

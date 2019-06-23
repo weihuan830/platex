@@ -1,0 +1,88 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: perimeter;end behavior;circumcenter;origin;moment
+:Prob: 0.5944;0.5708;0.5611;0.557;0.5558
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\begin{tikzpicture}[font=\footnotesize]
+\pgfplotsset{compat=1.8}
+\begin{axis}
+[axis lines = center, view={92.5}{15}, scale=1, ticks=none,
+axis background, xlabel = {$x$}, ylabel ={$y$}, zlabel ={$z$}, domain =-2:2, y domain =-2:2,
+xmin =-400,
+xmax =1499,
+ymin =-699,
+ymax =699,
+zmin =-200, 
+zmax =799,
+samples =10, samples y =40, z buffer = auto, 
+every axis x label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= east, xshift = 4, yshift=-4
+},
+every axis y label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= west, 
+},
+every axis z label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= south
+}]
+
+\addplot3[surf, shader=interp, mesh/cols=2, opacity=0.3] coordinates
+		{(1000,0,0) (0,-400,0) (0,-400,600) (0,-400,600)};
+\node[label={0:{$P$}},circle,fill,inner sep=1pt] at (axis cs:1000,0,0) {};
+\node[label={-90:{$A$}},circle,fill,inner sep=1pt] at (axis cs:0,-400,0) {};
+\node[label={90:{$B$}},circle,fill,inner sep=1pt] at (axis cs:0,-400,600) {};
+
+\addplot3[surf, shader=interp, mesh/cols=2, opacity=0.3] coordinates
+		{(1000,0,0) (0,-400,600) (0,400,600) (0,400,600)};
+
+\addplot3[surf, shader=interp, mesh/cols=2, opacity=0.3] coordinates
+		{(1000,0,0) (0, 400,0) (0,400,600) (0,400,600)};
+\node[label={90:{$C$}},circle,fill,inner sep=1pt] at (axis cs:0,400,600) {};
+\node[label={-90:{$D$}},circle,fill,inner sep=1pt] at (axis cs:0,400,0) {};
+
+\addplot3[surf, shader=interp, mesh/cols=2, opacity=0.3] coordinates
+		{(1000,0,0) (0, -400,600) (0,400,600) (0,400,600)};
+
+\addplot3[surf, black, thick] coordinates
+		{(0,-400,0) (0,-400,600) (0,400,600) (0, 400, 0) (0,-400,0)};
+
+\addplot3[surf, purple] coordinates
+		{(125, -350, 75) (601.25, -55.18, 197.46) };
+			
+\addplot3[surf, shader=interp, mesh/cols=2, thick, opacity=0.9] coordinates
+		{(621, -147, 206) (657, -111, 86)  (563, 31, 242) (599, 67, 122)};
+
+\addplot3[surf, black] coordinates
+		{(1000,0,0) (0,-400,0)};
+\addplot3[surf, black] coordinates
+		{(1000,0,0) (0,-400,600)};
+\addplot3[surf, black] coordinates
+		{(1000,0,0) (0,400,0)};
+\addplot3[surf, black] coordinates
+		{(1000,0,0) (0,400,600)};
+
+\addplot3[surf, purple] coordinates
+		{(601.25, -55.18, 197.46) (650, -25, 210)};
+
+\addplot3[surf, purple, densely dotted] coordinates
+		{(1000,0,0) (657, -111, 86)};
+
+\addplot3[surf, purple, densely dotted] coordinates
+		{(1000,0,0) (621, -147, 206)};
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

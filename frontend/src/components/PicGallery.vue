@@ -1,109 +1,171 @@
 <template>
   <div>
-          <div class="zI7 iyn Hsu">
-            <div class="gridCentered">
-              <div style="width: 100%;">
-                <div v-for="item in piclist" v-bind:key="item.name" class="Yl- MIw Hb7 imgcontent" v-bind:style="{transform: 'translateX('+item.transx+'px) translateY('+item.transy+'px)'}">
+    <div class="zI7 iyn Hsu">
+      <div class="gridCentered">
+        <div style="width: 100%;">
+          <div
+            v-for="(item, picindex) in piclist"
+            v-bind:key="item.name"
+            class="Yl- MIw Hb7 imgcontent"
+            v-bind:style="{transform: 'translateX('+item.transx+'px) translateY('+item.transy+'px)'}"
+          >
+            <div class="XiG zI7 iyn Hsu">
+              <a @click="getTex(item.name)" style="display: block; position: relative;">
+                <div class="Pj7 sLG XiG ZKv mix m1e">
+                  <div class="zI7 iyn Hsu" style="min-height: 55px;">
                     <div class="XiG zI7 iyn Hsu">
-                        <a  @click="getTex(item.name)" style="display: block; position: relative;">
-                            <div class="Pj7 sLG XiG ZKv mix m1e">
-                                <div class="zI7 iyn Hsu" style="min-height: 55px;">
-                                    <div class="XiG zI7 iyn Hsu">
-                                        <div class="Jea gjz zI7 iyn Hsu" style="min-height: 120px;">
-                                            <div class="ujU zI7 iyn Hsu">
-                                                <div class="XiG zI7 iyn Hsu">
-                                                    <img alt="Daring" style="width: 260px;" class="hCL kVc L4E MIw" :src="'static/image/'+item.name">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a> 
-                        <div class="MIw gjz ojN zI7 iyn Hsu hidecard">
-                          <div>
-                            <div @click="searchTagClick(tag)" v-for="(tag,index) in item.tags" class="tagstyle" :style="{background:item.tagcolor[index]}" v-bind:key="tag">{{tag}}</div>
+                      <div class="Jea gjz zI7 iyn Hsu" style="min-height: 120px;">
+                        <div class="ujU zI7 iyn Hsu">
+                          <div class="XiG zI7 iyn Hsu">
+                            <img
+                              alt="Daring"
+                              style="width: 260px;"
+                              class="hCL kVc L4E MIw"
+                              :src="'static/image/'+item.name"
+                            >
                           </div>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-
+              </a>
+              <div class="MIw gjz ojN zI7 iyn Hsu hidecard">
+                <div>
+                  <div
+                    @click.prevent="searchTagClick(item.name, tag, picindex, index)"
+                    v-for="(tag,index) in item.tags"
+                    class="tagstyle"
+                    :style="{background:item.tagcolor[index]}"
+                    v-bind:key="tag"
+                    v-show="item.tagshow[index]==1?true:false"
+                  >
+                    <i @click.prevent="deleteTag(item.name, tag, picindex, index, $event)"
+                      title="Delete"
+                      class="fa fa-close deletecross"
+                      style="font-size:20px"
+                    ></i>&nbsp;
+                    {{tag.split(",")[0].substr(0, 20)}}
+                  </div>
+                </div>
               </div>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-
+import DataService from "../services/data-service";
 export default {
   name: "PicGallery",
   data() {
-    return {
-      
-    };
+    return {};
   },
-  props: ['piclist'],
-  computed: {
-  },
-  mounted(){
-      
-  },
-  methods:{
-      getTex(id){
-        this.$emit('requestTexid', id.replace(".png",""))
-      },
-      searchTagClick(tag){
-        this.$emit('searchTag', tag)
+  props: ["piclist"],
+  computed: {},
+  mounted() {},
+  methods: {
+    getTex(id) {
+      this.$emit("requestTexid", id.replace(".png", ""));
+    },
+    searchTagClick(id, tag, index, tagindex) {
+      let config = {
+        state:"add",
+        id:id,
+        tag:tag,
+        index:index,
+        tagindex:tagindex
       }
+      this.addTagChange(config)
+    },
+    deleteTag(id, tag, index, tagindex, event) {
+      event.stopPropagation()
+      let config = {
+        state:"delete",
+        id:id,
+        tag:tag,
+        index:index,
+        tagindex:tagindex
+      }
+      Object.getPrototypeOf(DataService).deleteTag.call(
+        this,
+        "deleteTagChange",
+        config
+      );
+    },
+    deleteTagChange(data, config){
+      if(data == 'true'){
+        this.$emit("tagdatachanged", config);
+      }else {
+        alert("Delete Failed!!!")
+      }
+    },
+    addTagChange(config){
+      this.$emit("tagdatachanged", config);
+    },
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import "../../node_modules/font-awesome/css/font-awesome";
 a + div {
   /* -webkit-transition: opacity 0.5s;
   transition: opacity 0.5s;
   opacity: 0.2; */
   display: none;
 }
+.deletecross {
+  position: relative;
+  /* top: -10px; */
+  font-size: 20px;
+  border-radius: 2px;
+  background: white;
+  color: red;
+}
 .hidecard:hover {
-  display: block; 
+  display: block;
 }
 .tagstyle:hover {
-  border: 3px solid red !important;
+  border-color: red !important;
 }
-a:hover + div { 
-    display: block; 
-} 
-.tagstyle{
-    cursor: pointer; 
-    border-radius: 10px;
-    padding: 5px;
-    margin-bottom: 2px;
+a:hover + div {
+  display: block;
+}
+.tagstyle {
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 2px;
+  font-size: 14px;
+  /* text-align: center; */
+  border: 2px solid rgba(0, 0, 0, 0.2);
 }
 .hidecard {
-  padding-left:4px;
-  padding-right:4px;
+  padding-left: 4px;
+  padding-right: 12px;
   /* width:100%; */
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  height:100%;
-  top:-0px;
+  height: 100%;
+  top: -0px;
   position: absolute;
   z-index: 1000;
 }
 .imgcontent {
-    top: 0px; 
-    left: 0px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    padding-left: 2px;
-    padding-right: 2px;
-    border: 1px solid #ccc!important;
-    border-radius: 10px;
-    width: 260px;
-    position: absolute;
+  top: 0px;
+  left: 0px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 2px;
+  padding-right: 2px;
+  border: 1px solid #ccc !important;
+  border-radius: 10px;
+  width: 260px;
+  position: absolute;
 }
 .gridCentered {
   margin-left: auto;

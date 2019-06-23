@@ -1,0 +1,28 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: circumcenter;point of division formula;perimeter;moment;pappus&#146;s theorem, theorem of pappus
+:Prob: 0.442;0.4162;0.3985;0.3945;0.3928
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\begin{tikzpicture}[>=latex,xscale=.5*1.8, yscale=.5*1.8][font=\sf\small] 
+
+\draw[teal, thick, ->, >=stealth'] (0, 0) -- (2, 0)node[black, above, midway, pos=0.5, xshift=0, yshift=0, scale=1]{$\bf u$}; %u
+
+\begin{scope}[xshift=2cm,yshift=0cm]
+\draw[teal, thick, ->, >=stealth'] (0, 0) -- (-0.25, -0.9)node[black, right, midway, pos=0.5, xshift=0, yshift=0, scale=1]{$\bf w$}; %w
+\end{scope}
+
+\draw[teal, thick, ->, >=stealth'] (0, 0) -- ({2-0.25}, {0-0.9})node[black, left, midway, pos=0.5, xshift=0, yshift=-4, scale=1]{$\bf u+w$};
+
+\end{tikzpicture}
+\end{document}

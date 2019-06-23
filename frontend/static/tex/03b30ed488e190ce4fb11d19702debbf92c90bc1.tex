@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: absolute value rules;tangent line;properties of equality, equation rules;element of a set;equation of a line
+:Prob: 0.6357;0.5486;0.5391;0.5355;0.5318
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\begin{tikzpicture}[font=\footnotesize]
+\pgfplotsset{compat=1.8}
+\begin{axis}
+[axis lines = center, view={150}{20},
+axis background, xlabel = {$x$}, ylabel ={$y$}, zlabel ={$z$}, domain =-2:2, y domain =-2:2,
+xmin =0,
+xmax =9.99,
+ymin =0,
+ymax =5.99,
+zmin =0, 
+zmax =12,
+samples =10, samples y =40, z buffer = auto, 
+every axis x label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= east, yshift =-2
+},
+every axis y label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= west,
+},
+every axis z label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= south
+}]
+
+\addplot3[surf, shader=interp, mesh/cols=2, opacity=0.6] coordinates
+		{(5,0,0) (0,2,0) (0,0,10) (0,0,10)};
+		
+\addplot3[surf, black] coordinates
+		{(5,0,0) (0,2,0)};
+\addplot3[surf, black] coordinates
+		{(0,0,10) (0,2,0)};	
+\addplot3[surf, black] coordinates
+		{ (0,0,10) (5,0,0)};	
+				
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

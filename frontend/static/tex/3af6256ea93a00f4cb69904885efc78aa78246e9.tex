@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: absolute value rules;deleted neighborhood;neighborhood;equation of a line;parabola
+:Prob: 0.5405;0.52;0.5183;0.5147;0.5143
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\begin{tikzpicture}[font=\footnotesize]
+\pgfplotsset{compat=1.8}
+\begin{axis}
+[axis lines = center, view={20}{30}, ticks=none, 
+axis on top, xlabel = {$x$}, ylabel ={$y$}, zlabel ={$z$}, domain =0:1, y domain =0:1,
+xmin =-2.0,
+xmax =6.0,
+ymin =-3.0,
+ymax =5,
+zmin =-4.0, 
+zmax =4.0,
+samples =10, samples y =40, z buffer =sort,
+every axis x label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= west, yshift =-2
+},
+every axis y label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= west, yshift =2
+},
+every axis z label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= south
+}]
+
+\node[label={0:{$A(4,0,-2)$}},circle,fill,inner sep=0pt] at (axis cs:4,0,-2) {};
+\node[label={0:{$B(4,2,1)$}},circle,fill,inner sep=0pt] at (axis cs:4,2,1) {};
+
+\node[xshift=6, label={180:{${\bf a}$}}] at (axis cs:0,1,1.5) {};
+
+\node[xshift=3, yshift=-4, label={100:{$O$}}] at (axis cs:0,0,0) {};
+
+\addplot3[dashed, ->, >=stealth'] coordinates
+        {(0,0,0) (4,0,-2)};
+
+\addplot3[dashed, ->, >=stealth'] coordinates
+        {(0,0,0) (4,2,1)};
+
+\addplot3[<-, >=stealth'] coordinates
+        {(4,0,-2) (4,2,1)};
+
+\addplot3[purple, <-, >=stealth'] coordinates
+        {(0,2,3) (0,0,0)};
+
+\addplot3[dashed] coordinates
+        {(0,2,3) (0,2,3)};
+\addplot3[dashed] coordinates
+        {(0,2,3) (0,0,3)};
+\addplot3[dashed] coordinates
+        {(0,2,3) (0,2,0)};
+
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

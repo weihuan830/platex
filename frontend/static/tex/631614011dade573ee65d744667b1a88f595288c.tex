@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: area using parametric equations,parametric integral formula;equation of a line;average rate of change, arc ;inverse variation, inverse proportion , inversely proportional ;perimeter
+:Prob: 0.5273;0.512;0.4845;0.4844;0.4835
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\pgfplotsset{
+    colormap/outside/.style={
+        colormap=
+            {outside}{
+            rgb255(0cm)=(110,110,255);
+            rgb255(1cm)=(20,20,255);
+            }
+    },
+    colormap/outside,
+    colormap/inside/.style={
+        colormap={inside}{
+            rgb255(0cm)=(20,20,255);
+            rgb255(1cm)=(220,220,255);
+        }
+    },
+    colormap/inside
+}
+
+\begin{tikzpicture}[font=\footnotesize]
+\pgfplotsset{compat=1.8}
+\begin{axis}
+[axis lines = center, view={100}{10}, scale=0.75, ticks=none,
+axis background, xlabel = {$x$}, ylabel ={$y$}, zlabel ={$z$}, domain =-2:2, y domain =-2:2,
+samples =20, samples y =40, z buffer = auto, 
+axis equal, 
+xmin=0, xmax=6,
+ymin=0, ymax=6,
+zmin=0, zmax=4,
+every axis x label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= east, xshift = 2, yshift=-4
+},
+every axis y label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= west, 
+},
+every axis z label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= south
+}]
+
+\addplot3[->, >=stealth] coordinates
+		{(0,0,0) (3.0875, 2, 2)};
+\addplot3[->, >=stealth] coordinates
+		{(0,0,0) (0.3375, 4, 3)};
+
+\node[label={180:{${\bf r_0}$}}] at (axis cs:1.8525, 1.2, 1.2) {};
+\node[label={0:{${\bf r}$}}] at (axis cs:0.27, 3.2, 2.4) {};
+
+
+    \addplot3 [
+      surf, 
+      domain=-3:3,
+      samples=2,
+      y domain=-2:3,
+      samples y=2,
+      line join=round,  
+      mesh/interior colormap name=inside,
+      colormap/outside,
+%      shader=faceted,
+      variable=\t,
+      point meta={t},
+      faceted color=cyan, opacity=0.8
+    ]
+           ({0.5*t-2*y+1.4},{0.8*t+2.5},{0.5*y+2.5}); 
+
+\addplot3[teal, thick, ->, >=stealth'] coordinates
+		{(3.0875, 2, 2) (0.3375, 4, 3) };		
+
+\addplot3[purple, <-, >=stealth'] coordinates
+		{(3.5875, 1.6875, 4.) (3.0875, 2, 2) }; 	
+		
+\node[label={180:{\scriptsize $P_0$}},circle,fill,inner sep=0.75pt] at (axis cs:3.0875, 2, 2) {};
+\node[label={0:{\scriptsize $P$}},circle,fill,inner sep=0.75pt] at (axis cs:0.3375, 4, 3) {};
+
+\node[label={90:{${\bf r-r_0}$}}] at (axis cs:2, 3, 2.5) {};
+\node[label={0:{$\bf n$}}] at (axis cs:3.4875, 1.6, 3.6) {};
+
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

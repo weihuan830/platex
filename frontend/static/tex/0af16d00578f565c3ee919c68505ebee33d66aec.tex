@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: y-z plane;x-z plane;complex plane, argand plane;x-y plane;perimeter
+:Prob: 0.5662;0.5572;0.5533;0.5482;0.5246
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\pgfplotsset{
+    colormap/outside/.style={
+        colormap=
+            {outside}{
+            rgb255(0cm)=(110,110,255);
+            rgb255(1cm)=(20,20,255);
+            }
+    },
+    colormap/outside,
+    colormap/inside/.style={
+        colormap={inside}{
+            rgb255(0cm)=(20,20,255);
+            rgb255(1cm)=(220,220,255);
+        }
+    },
+    colormap/inside
+}
+
+\begin{tikzpicture}[font=\footnotesize]
+\pgfplotsset{compat=1.8}
+\begin{axis}
+[axis lines = center, view={120}{20}, scale=1, ticks=none,
+axis background, xlabel = {$x$}, ylabel ={$y$}, zlabel ={$z$}, domain =-2:2, y domain =-2:2,
+samples =20, samples y =40, z buffer = auto, 
+axis equal, 
+%xmin=-4, xmax=4,
+%ymin=-4, ymax=4,
+%zmin=0, zmax=1.2,
+every axis x label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= east, xshift = 2, yshift=-4
+},
+every axis y label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= west, 
+},
+every axis z label/.style={
+    at={(ticklabel* cs:1)},
+    anchor= south
+}]
+
+    \addplot3 [
+      surf, 
+      domain=0:2,
+      samples=2,
+      y domain=-2:2,
+      samples y=2,
+%      line join=round,  
+      shader=interp,
+%      mesh/interior colormap name=inside,
+%      colormap/outside,
+      shader=faceted,
+      variable=\t,
+%      point meta={t},
+      faceted color=black, opacity=0.8
+    ]
+           ({2-t},{t},{y});
+           
+    \addplot3 [
+      surf, red,
+      domain=0:2,
+      samples=2,
+      y domain=0:0,
+      samples y=2,
+%      line join=round,  
+      shader=interp,
+%      mesh/interior colormap name=inside,
+%      colormap/outside,
+      shader=faceted,
+      variable=\t,
+%      point meta={t},
+      faceted color=black, opacity=0.8
+    ]
+           ({2-t},{t},{0});
+                      
+\node[label={150:{\scriptsize $2$}},circle,fill,inner sep=0.5pt] at (axis cs:2,0,0) {};
+\node[label={20:{\scriptsize $2$}},circle,fill,inner sep=0.5pt] at (axis cs:0,2,0) {};
+
+\end{axis}
+
+\end{tikzpicture}
+\end{document}

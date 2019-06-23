@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{tikz, comment}
+\usepackage{pifont}
+\usepackage{fontspec, pgfplots}
+\usetikzlibrary{arrows, decorations.markings, decorations.pathreplacing}
+\begin{comment}
+:Title: Not defined yet
+:Tags: absolute value rules;neighborhood;deleted neighborhood;parabola;equation of a line
+:Prob: 0.5391;0.5187;0.5164;0.5146;0.5143
+:Author: Prof.Hu Ji-shan, HKUST
+:Slug: No name yet
+
+Description Here.........
+\end{comment}
+\begin{document}\centering 
+
+\begin{tikzpicture}[>=latex,xscale=.5*1, yscale=.5*1][font=\sf\small] 
+
+%\draw[xstep=1cm,ystep=1cm,color=gray!80] (0, -1) grid (8, 8);
+
+    	\foreach \x in {}
+     		\draw (\x,2pt/8) -- (\x,-2pt/8)
+			node[anchor=north] {\tiny$\x$}
+			;
+
+    	\foreach \x in {}
+     		\draw (\x,2pt/1) -- (\x,-2pt/1)
+			node[anchor=south] {\tiny$\x$}
+			;
+    	\foreach \y in {}
+     		\draw (-2pt/1,\y) -- (2pt/1,\y)
+			node[anchor=east] {\tiny $\y$}
+			;
+
+\draw[->] (-3, 0) -- (4, 0)node[below] {$x$} ;
+\draw[->] (0, -2) -- (0, 4)node[left] {$y$} ;
+
+\draw[fill] (-1, 3) circle(0.02)node[left, scale=0.7] {$A(-1, 3)$};
+\draw[fill] (2,2) circle(0.02)node[right, scale=0.7] {$B(2,2)$};
+
+\draw[dashed, ->, >=stealth'] (0, 0) -- (-1, 3); %A
+\draw[dashed, ->, >=stealth'] (0, 0) -- (2,2); %B
+
+\draw[->, >=stealth'] (-1, 3)--(2,2);
+
+
+\draw[purple, ->, >=stealth'] (0, 0) -- (3, -1)node[black, below, midway, pos=0.5, xshift=2, yshift=0, scale=0.7]{$\bf a$};
+
+\node[scale=0.7] at (-0.2/1, -0.2/1) {\scriptsize$O$};
+
+\end{tikzpicture}
+\end{document}
