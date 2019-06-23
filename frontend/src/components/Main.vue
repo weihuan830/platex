@@ -40,7 +40,8 @@ export default {
       showeditor:false,
       acecontent:"",
       currentPicTag:{},
-      currentPicTagvalue:""
+      currentPicTagvalue:"",
+      colorset:{}
     };
   },
   computed: {
@@ -168,15 +169,23 @@ export default {
       }
     },
     getRandomColor(str) {
-      var letters = '0123456789ABCDEF';
-      var o = Math.round, r = Math.random, s = 255;
-      return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ', 0.8)';
+      if(this.colorset[str[0]]){
+        return this.colorset[str[0]]
+      }
+      var o = Math.round, r = Math.random;
+      let color = 'rgba(' + o(r()*200 + 50) + ',' + o(r()*200 + 50) + ',' + o(r()*200 + 50) + ', 0.8)';
+      this.colorset[str[0]] = color
+      return color
     },
     getRandomColorList(arr) {
-      var letters = '0123456789ABCDEF';
       return arr.map(itm =>{
-        var o = Math.round, r = Math.random, s = 255;
-        return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ', 0.8)';
+        if(this.colorset[itm[0]]){
+          return this.colorset[itm[0]]
+        }
+        var o = Math.round, r = Math.random;
+        let color = 'rgba(' + o(r()*200 + 50) + ',' + o(r()*200 + 50) + ',' + o(r()*200 + 50) + ', 0.8)';
+        this.colorset[itm[0]] = color
+        return color
       })
     },
     onScroll(e) {
