@@ -1,12 +1,26 @@
 <template>
   <div>
     <AppBase @searchkey="update"></AppBase>
-    <PicGallery @tagdatachanged="humantagchanged" @searchTag="update" @requestTexid="getTexfile" :style="{height: getheight}" :piclist="piclist"></PicGallery>
+    <PicGallery
+      @tagW2change="tagW2change"
+      @tagdatachanged="humantagchanged"
+      @searchTag="update"
+      @requestTexid="getTexfile"
+      :style="{height: getheight}"
+      :piclist="piclist"
+    ></PicGallery>
     <div @click="hideEditor($event)">
       <TexEditor :acecontent="acecontent" v-if="showeditor" class="texEdi"></TexEditor>
     </div>
     <div>
-      <TagEditor :currentPicTagvalue="currentPicTagvalue" :currentPicTag="currentPicTag" @tagchange="humantagchanged" @tagcancel="hideTagEditor" v-if="showetagditor" class="texEdi"></TagEditor>
+      <TagEditor
+        :currentPicTagvalue="currentPicTagvalue"
+        :currentPicTag="currentPicTag"
+        @tagchange="humantagchanged"
+        @tagcancel="hideTagEditor"
+        v-if="showetagditor"
+        class="texEdi"
+      ></TagEditor>
     </div>
   </div>
 </template>
@@ -14,8 +28,8 @@
 <script>
 import PicGallery from "./PicGallery";
 import AppBase from "./AppBase";
-import TexEditor from "./TexEditor"
-import TagEditor from "./TagEditor"
+import TexEditor from "./TexEditor";
+import TagEditor from "./TagEditor";
 import DataService from "../services/data-service";
 export default {
   name: "Main",
@@ -36,12 +50,12 @@ export default {
       marginleft: 0,
       currentPage: 1,
       searchtag: "",
-      showetagditor:false,
-      showeditor:false,
-      acecontent:"",
-      currentPicTag:{},
-      currentPicTagvalue:"",
-      colorset:{}
+      showetagditor: false,
+      showeditor: false,
+      acecontent: "",
+      currentPicTag: {},
+      currentPicTagvalue: "",
+      colorset: {}
     };
   },
   computed: {
@@ -51,7 +65,7 @@ export default {
   },
   mounted() {
     this.initialize();
-    this.update()
+    this.update();
     window.addEventListener("scroll", this.onScroll);
   },
   methods: {
@@ -93,38 +107,63 @@ export default {
       this.marginleft =
         (window.innerWidth - this.sizeinline * this.gridwidth) / 2;
     },
-    humantagchanged(data){
-      if(data.state == "delete"){
-        this.piclist[data.index].tagshow[data.tagindex] = 0
-      }else if(data.state == "add"){
-        this.currentPicTag = data
-        this.currentPicTagvalue = data.tag
-        this.showetagditor = true
-      }else if(data.state == "change"){
-        let tags = data.tag.trim().split(";")
-        this.piclist[data.index].tagshow[data.tagindex] = 0
-        for(let t=0;t<tags.length;t++){
-          let changed = false
-          for(let i=0;i<this.piclist[data.index].tags.length;i++){
-              if(this.piclist[data.index].tags[i] == tags[t]){
-                this.piclist[data.index].tagshow[i] = 1
-                changed = true
-              }
+    tagW2change(data) {
+      if (data.state == "add") {
+        this.currentPicTag = data;
+        this.currentPicTagvalue = "";
+        this.showetagditor = true;
+      } else if (data.state == "change") {
+        this.currentPicTag = data;
+        this.currentPicTagvalue = data.tag;
+        this.showetagditor = true;
+      }
+    },
+    humantagchanged(data) {
+      console.log(data)
+      if (data.state == "delete") {
+        this.piclist[data.index].tagshow[data.tagindex] = 0;
+      } else if (data.state == "change") {
+        let tags = data.tag.trim().split(";");
+        this.piclist[data.index].tagshow[data.tagindex] = 0;
+        for (let t = 0; t < tags.length; t++) {
+          let changed = false;
+          for (let i = 0; i < this.piclist[data.index].tags.length; i++) {
+            if (this.piclist[data.index].tags[i] == tags[t]) {
+              this.piclist[data.index].tagshow[i] = 1;
+              changed = true;
+            }
           }
-          if(!changed){
-            this.piclist[data.index].tags.push(tags[t])
-            this.piclist[data.index].tagshow.push(1)
-            this.piclist[data.index].tagcolor.push( this.getRandomColor() )
+          if (!changed) {
+            this.piclist[data.index].tags.push(tags[t]);
+            this.piclist[data.index].tagshow.push(1);
+            this.piclist[data.index].tagcolor.push(this.getRandomColor(tags[t]));
           }
         }
-        this.showetagditor = false
+        this.showetagditor = false;
+      } else if (data.state == "add") {
+        let tags = data.tag.trim().split(";");
+        for (let t = 0; t < tags.length; t++) {
+          let changed = false;
+          for (let i = 0; i < this.piclist[data.index].tags.length; i++) {
+            if (this.piclist[data.index].tags[i] == tags[t]) {
+              this.piclist[data.index].tagshow[i] = 1;
+              changed = true;
+            }
+          }
+          if (!changed) {
+            this.piclist[data.index].tags.push(tags[t]);
+            this.piclist[data.index].tagshow.push(1);
+            this.piclist[data.index].tagcolor.push(this.getRandomColor(tags[t]));
+          }
+        }
+        this.showetagditor = false;
       }
-      this.piclist.push({})
-      this.piclist.pop()
+      this.piclist.push({});
+      this.piclist.pop();
     },
     update(searchkey) {
-      if(searchkey !== undefined){
-        this.searchtag = searchkey
+      if (searchkey !== undefined) {
+        this.searchtag = searchkey;
         this.resetConfig();
       }
       let config = {
@@ -140,24 +179,29 @@ export default {
     getpiclist(data) {
       this.stopfetch = false;
       let size = this.sizeinline;
-      this.piclist = this.piclist.concat(data.map((item, i) => {
-        let x = (this.currentIndex % size) * this.gridwidth + this.marginleft;
-        let imghei = item.height / (item.width / this.imagewidth);
-        // let padbtm = imghei / config.imagewidth * 100;//percentage
-        let hei = imghei + 25;
-        // let src = config.baseurl+"/image/"+arr[i]["name"];
-        let y = this.yindex[this.currentIndex % size] + 80;
-        this.yindex[this.currentIndex % size] += hei;
-        this.currentIndex++;
-        return {
-          name: item.name,
-          transx: x,
-          transy: y,
-          tags: Object.keys(item.tags),
-          tagshow: Object.values(item.tags),
-          tagcolor: this.getRandomColorList(Object.keys(item.tags))
-        };
-      }))
+      this.piclist = this.piclist.concat(
+        data.map((item, i) => {
+          let x = (this.currentIndex % size) * this.gridwidth + this.marginleft;
+          let imghei = item.height / (item.width / this.imagewidth);
+          // let padbtm = imghei / config.imagewidth * 100;//percentage
+          let hei = imghei + 45;
+          if (hei < 200) {
+            hei = 200;
+          }
+          // let src = config.baseurl+"/image/"+arr[i]["name"];
+          let y = this.yindex[this.currentIndex % size] + 80;
+          this.yindex[this.currentIndex % size] += hei;
+          this.currentIndex++;
+          return {
+            name: item.name,
+            transx: x,
+            transy: y,
+            tags: Object.keys(item.tags),
+            tagshow: Object.values(item.tags),
+            tagcolor: this.getRandomColorList(Object.keys(item.tags))
+          };
+        })
+      );
     },
     resetConfig() {
       this.currentIndex = 0;
@@ -169,24 +213,40 @@ export default {
       }
     },
     getRandomColor(str) {
-      if(this.colorset[str[0]]){
-        return this.colorset[str[0]]
+      if (this.colorset[str[0]]) {
+        return this.colorset[str[0]];
       }
-      var o = Math.round, r = Math.random;
-      let color = 'rgba(' + o(r()*200 + 50) + ',' + o(r()*200 + 50) + ',' + o(r()*200 + 50) + ', 0.8)';
-      this.colorset[str[0]] = color
-      return color
+      var o = Math.round,
+        r = Math.random;
+      let color =
+        "rgba(" +
+        o(r() * 200 + 50) +
+        "," +
+        o(r() * 200 + 50) +
+        "," +
+        o(r() * 200 + 50) +
+        ", 0.8)";
+      this.colorset[str[0]] = color;
+      return color;
     },
     getRandomColorList(arr) {
-      return arr.map(itm =>{
-        if(this.colorset[itm[0]]){
-          return this.colorset[itm[0]]
+      return arr.map(itm => {
+        if (this.colorset[itm[0]]) {
+          return this.colorset[itm[0]];
         }
-        var o = Math.round, r = Math.random;
-        let color = 'rgba(' + o(r()*200 + 50) + ',' + o(r()*200 + 50) + ',' + o(r()*200 + 50) + ', 0.8)';
-        this.colorset[itm[0]] = color
-        return color
-      })
+        var o = Math.round,
+          r = Math.random;
+        let color =
+          "rgba(" +
+          o(r() * 200 + 50) +
+          "," +
+          o(r() * 200 + 50) +
+          "," +
+          o(r() * 200 + 50) +
+          ", 0.8)";
+        this.colorset[itm[0]] = color;
+        return color;
+      });
     },
     onScroll(e) {
       if (
@@ -196,21 +256,20 @@ export default {
       ) {
         this.currentPage += 1;
         this.stopfetch = true;
-        this.update()
+        this.update();
       }
     },
-    hideTagEditor(e){
-      this.showetagditor = false
+    hideTagEditor(e) {
+      this.showetagditor = false;
     },
-    hideEditor(e){
-      if(e.target.className === "ace_content"){
-        console.log(e)
-      }else{
-        this.showeditor = false
-        document.getElementsByTagName("html")[0].style.overflow = "auto" 
+    hideEditor(e) {
+      if (e.target.className === "ace_content") {
+      } else {
+        this.showeditor = false;
+        document.getElementsByTagName("html")[0].style.overflow = "auto";
       }
     },
-    getTexfile(id){
+    getTexfile(id) {
       let config = {
         name: id
       };
@@ -220,28 +279,27 @@ export default {
         config
       );
     },
-    refreshACEeditor(data){
-      this.showeditor = true
-      document.getElementsByTagName("html")[0].style.overflow = "hidden" 
-      this.acecontent = data
+    refreshACEeditor(data) {
+      this.showeditor = true;
+      document.getElementsByTagName("html")[0].style.overflow = "hidden";
+      this.acecontent = data;
     }
-    
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.stopscroll{
+.stopscroll {
   overflow: hidden;
 }
-.startscroll{
+.startscroll {
   overflow: auto;
 }
 .texEdi {
-    height:100%;
-    width:100%;
-    background-color:rgba(0,0,0,0.4);
-    position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
 }
 </style>

@@ -74,6 +74,19 @@ class Service {
     }
     xhr.send();
   }
+  changeTag (callback, config) {
+    let that = this
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', DataService.baseurl +"addtag?id="+ config.id + "&tag=" +config.tag + "&rep="+config.rep);
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4){
+          if (callback) {
+            that[callback](xhr.responseText, config)
+          }
+        }
+    }
+    xhr.send();
+  }
 }
 
 const DataService = new Service()

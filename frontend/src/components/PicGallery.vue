@@ -10,6 +10,7 @@
             v-bind:style="{transform: 'translateX('+item.transx+'px) translateY('+item.transy+'px)'}"
           >
             <div class="XiG zI7 iyn Hsu">
+              <i @click.prevent="addTagClick(item.name, picindex)" class="fa fa-plus addtagicon" aria-hidden="true"></i>
               <a @click="getTex(item.name)" style="display: block; position: relative;">
                 <div class="Pj7 sLG XiG ZKv mix m1e">
                   <div class="zI7 iyn Hsu" style="min-height: 55px;">
@@ -19,7 +20,6 @@
                           <div class="XiG zI7 iyn Hsu">
                             <img
                               alt="Daring"
-                              style="width: 260px;"
                               class="hCL kVc L4E MIw"
                               :src="'static/image/'+item.name"
                             >
@@ -33,14 +33,14 @@
               <div class="MIw gjz ojN zI7 iyn Hsu hidecard">
                 <div>
                   <div
-                    @click.prevent="searchTagClick(item.name, tag, picindex, index)"
+                    @click.prevent="changeTagClick(item.name, tag, picindex, index)"
                     v-for="(tag,index) in item.tags"
                     class="tagstyle"
                     :style="{background:item.tagcolor[index]}"
                     v-bind:key="tag"
                     v-show="item.tagshow[index]==1?true:false"
                   >
-                    <i @click.prevent="deleteTag(item.name, tag, picindex, index, $event)"
+                    <i @click.prevent="deleteTagClick(item.name, tag, picindex, index, $event)"
                       title="Delete"
                       class="fa fa-close deletecross"
                       style="font-size:20px"
@@ -70,17 +70,17 @@ export default {
     getTex(id) {
       this.$emit("requestTexid", id.replace(".png", ""));
     },
-    searchTagClick(id, tag, index, tagindex) {
-      let config = {
-        state:"add",
-        id:id,
-        tag:tag,
-        index:index,
-        tagindex:tagindex
-      }
-      this.addTagChange(config)
-    },
-    deleteTag(id, tag, index, tagindex, event) {
+    // searchTagClick(id, tag, index, tagindex) {
+    //   let config = {
+    //     state:"add",
+    //     id:id,
+    //     tag:tag,
+    //     index:index,
+    //     tagindex:tagindex
+    //   }
+    //   this.addTagChange(config)
+    // },
+    deleteTagClick(id, tag, index, tagindex, event) {
       event.stopPropagation()
       let config = {
         state:"delete",
@@ -91,19 +91,34 @@ export default {
       }
       Object.getPrototypeOf(DataService).deleteTag.call(
         this,
-        "deleteTagChange",
+        "deleteTagCallback",
         config
       );
     },
-    deleteTagChange(data, config){
+    deleteTagCallback(data, config){
       if(data == 'true'){
         this.$emit("tagdatachanged", config);
       }else {
         alert("Delete Failed!!!")
       }
     },
-    addTagChange(config){
-      this.$emit("tagdatachanged", config);
+    changeTagClick(id, tag, index, tagindex){
+      let config = {
+        state:"change",
+        id:id,
+        tag:tag,
+        index:index,
+        tagindex:tagindex
+      }
+      this.$emit("tagW2change", config);
+    },
+    addTagClick(id, index){
+      let config = {
+        state:"add",
+        id:id,
+        index:index
+      }
+      this.$emit("tagW2change", config);
     },
   }
 };
@@ -117,6 +132,17 @@ a + div {
   transition: opacity 0.5s;
   opacity: 0.2; */
   display: none;
+}
+.addtagicon {
+    text-align: center;
+    background: green;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    margin-left: 230px;
+    font-size: 20px;
 }
 .deletecross {
   position: relative;
@@ -405,7 +431,7 @@ a:hover + div {
   flex-direction: column;
 }
 .L4E {
-  width: 100%;
+  width: 256px;
 }
 .ujU {
   -webkit-flex: 1 1 auto;

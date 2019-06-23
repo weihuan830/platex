@@ -32,7 +32,7 @@
             >
               <div class="Jea gpV mix zI7 iyn Hsu" style="height:40px">
                 <div class="Jea XiG fZz gjz ujU zI7 iyn Hsu" style="height:100%">
-                  <div onclick="requestSearch()" class="Eqh ocu zI7 iyn Hsu">
+                  <div @click="requestSearch()" class="Eqh ocu zI7 iyn Hsu">
                     <svg
                       class="gUZ B9u U9O kVc"
                       height="20"
@@ -47,7 +47,18 @@
                     </svg>
                   </div>
                   <div class="ujU zI7 iyn Hsu" style="height:100%">
-                    <input
+                    <multiselect
+                      v-model="value"
+                      class="SearchBoxInputExperimental"
+                      label="name"
+                      track-by="code"
+                      placeholder="Input to search"
+                      :options="options"
+                      :multiple="true"
+                      :taggable="true"
+                      @tag="addLocalTag"
+                    ></multiselect>
+                    <!-- <input
                       id="id_search"
                       type="text"
                       autocapitalize="off"
@@ -63,8 +74,8 @@
                       style="background-color:transparent;border:none;color:#333;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Fira Sans&quot;,&quot;Droid Sans&quot;,&quot;Helvetica Neue&quot;,Helvetica,&quot;ヒラギノ角ゴ Pro W3&quot;,&quot;Hiragino Kaku Gothic Pro&quot;,メイリオ,Meiryo,&quot;ＭＳ Ｐゴシック&quot;,Arial,sans-serif,&quot;Apple Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,&quot;Segoe UI Symbol&quot;;font-size:16px;font-weight:600;height:100%;outline:none;padding:0;width:100%"
                       v-model="searchValue"
                       v-on:input="searchKeyChange($event)"
-                    >
-                    <ul v-if="showhints" class="ul-container">
+                    >-->
+                    <!-- <ul v-if="showhints" class="ul-container">
                       <li v-for="item in hintList" v-bind:key="item" @click="clickTag2Search(item)">
                         <div class="text-container">
                           <div class="text">
@@ -72,9 +83,9 @@
                           </div>
                         </div>
                       </li>
-                    </ul>
+                    </ul> -->
                   </div>
-                  <div class="Eqh XTf zI7 iyn Hsu" style="z-index: 3;">
+                  <!-- <div class="Eqh XTf zI7 iyn Hsu" style="z-index: 3;margin-top: 3px;margin-left: 5px;">
                     <div @click="clearSearchKeyword()" class="zI7 iyn Hsu">
                       <button
                         aria-label="Remove search input"
@@ -85,8 +96,8 @@
                           <div class="INd zI7 iyn Hsu">
                             <svg
                               class="gUZ B9u U9O kVc"
-                              height="12"
-                              width="12"
+                              height="20"
+                              width="20"
                               viewBox="0 0 24 24"
                               aria-hidden="true"
                               aria-label
@@ -100,7 +111,7 @@
                         </div>
                       </button>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -112,53 +123,52 @@
 </template>
 
 <script>
-import PicGallery from './PicGallery'
+import PicGallery from "./PicGallery";
 import DataService from "../services/data-service";
+import Multiselect from "vue-multiselect";
 export default {
   name: "AppBase",
-  components: {},
+  components: {
+    Multiselect
+  },
   data() {
     return {
-      showhints: false,
       logoimg: require("../assets/img/logo.png"),
-      hintList: [],
-      searchValue: ""
+      searchValue: "",
+      value: [],
+      options: []
     };
   },
   mounted() {
-      Object.getPrototypeOf(DataService).getAllTags.call(this, 'initialize', "")
+    Object.getPrototypeOf(DataService).getAllTags.call(this, "initialize", "");
   },
   methods: {
     initialize() {
-      this.filterHints();
+      this.options = DataService.tagBase.map((item,i) => {
+        return {name: item, code:item}
+      })
     },
-    searchKeyChange() {
-      if (this.searchValue.length > 0) {
-        this.showhints = true;
-        this.filterHints()
-      } else {
-        this.showhints = false;
-      }
+    addLocalTag(newTag) {},
+    requestSearch() {
+      this.searchValue = (this.value.map(element => {
+        return element["name"]
+      })).join(";")
+      this.$emit("searchkey", this.searchValue);
     },
-    clickTag2Search(val){
-        this.searchValue = val
-        this.$emit('searchkey', this.searchValue)
-        this.showhints = false;
-    },
-    clearSearchKeyword(){
-        this.clickTag2Search("")
-    },
-    filterHints() {
-        this.hintList = DataService.tagBase.filter((item, i) => {
-            return (item.indexOf(this.searchValue) >= 0)
-      });
-    }
+    // clickTag2Search(val) {
+    //   this.searchValue = val;
+    //   this.$emit("searchkey", this.searchValue);
+    // },
+    // clearSearchKeyword() {
+    //   this.clickTag2Search("");
+    // }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 .AppBase {
   margin-top: -1px;
   min-width: 320px;
@@ -222,10 +232,9 @@ a {
   color: #333;
   font-weight: bold;
   text-decoration: none;
-
 }
 .gpV {
-  background-color: #efefef;
+  /* background-color: #efefef; */
 }
 .mix {
   border-radius: 8px;

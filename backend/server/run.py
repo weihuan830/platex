@@ -6,6 +6,7 @@ import os,sys
 from pathlib import Path
 from PIL import Image
 from datetime import date
+from functools import reduce
 
 # dd/mm/YY
 
@@ -91,17 +92,22 @@ def getIMGList():
     page = 1
     tag = ""
     if "tag" in request.args:
-        try:
-            tag = request.args['tag']
-            if tag.strip() != "":
+        # try:
+            tagstr = request.args['tag']
+            if tagstr.strip() != "":
                 localList = []
-                if tag.strip() in _TRS:
-                    for item in _IRL:
-                        if tag in item['tags']:
-                            localList.append(item)
-
-        except:
-            localList = []
+                tmpSet = {}
+                tags = tagstr.split(";")
+                for tag in tags:
+                    if tag.strip() in _TRS:
+                        for item in _IRL:
+                            if tag in item['tags']:
+                                if not item['name'] in tmpSet:
+                                    tmpSet[item['name']] = item
+                                    tmpSet[item['name']]["cnt"] = 1
+                                else:
+                                    tmpSet[item['name']]["cnt"] += 1
+                localList = sorted(tmpSet.values(), key=lambda kv: kv["cnt"], reverse=True)
     if "page" in request.args:
         try:
             page = int(request.args['page'])
@@ -130,7 +136,8 @@ def getTagAdd():
         replaced = request.args['rep'].strip()
         filename = todayFile()
         with open(filename, "a") as f:
-            f.write(texid+";"+"0"+";"+replaced+"\n")
+            if len(replaced) > 0:
+                f.write(texid+";"+"0"+";"+replaced+"\n")
             for i in tag:
                 t = i.replace(";","").strip()
                 if len(t) > 0:

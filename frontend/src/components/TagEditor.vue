@@ -24,9 +24,8 @@ export default {
       this.$emit("tagcancel");
     },
     submitTag(event) {
-      console.log(this.currentPicTagvalue)
       let config = {
-        state: "change",
+        state: this.currentPicTag.state,
         id: this.currentPicTag.id,
         tag: this.currentPicTag.tag,
         index: this.currentPicTag.index,
@@ -77,7 +76,7 @@ export default {
 .submit {
   border-color: darkgreen;
   background-color: lawngreen;
-  margin-right: 93px;
+  margin-right: 73px;
   width: 100px;
   padding: 10px;
   border-radius: 10px;
